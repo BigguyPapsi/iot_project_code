@@ -1,120 +1,109 @@
+#define BLYNK_TEMPLATE_ID "TMPLfuqUaKCP"
+#define BLYNK_DEVICE_NAME "Smart Fan"
+#define BLYNK_PRINT Serial
+#define BLYNK_DEBUG
 #include <BlynkSimpleEsp8266.h>
 #include <ESP8266WiFi.h>
 
 
-#define BT1 D1 
-#define BT2 D2 
-#define BT3 D3 
+#define BTN1 D1 
+#define BTN2 D2 
+#define BTN3 D3 
 
 
-char auth[] = "udyYsrZspqRGfIDf05maaINmA5SEGRuh";
- char ssid[] = "oansm";
- char pass[] = "0987654321";
+char auth[] = "0l6ViodRf6Dm2ufo90fci277516__9ja";
+ char ssid[] = "#N/A";
+ char pass[] = "55555555";
  
 
-WidgetLCD lcd1(V0);
-WidgetLED BT1Blynk(V10);
-WidgetLED BT2Blynk(V11);
-WidgetLED BT3Blynk(V12);
+WidgetLCD LCD_BLYNK(V0);
+WidgetLED LED1_BLYNK(V10);
+WidgetLED LED2_BLYNK(V11);
+WidgetLED LED3_BLYNK(V12);
 
 void setup()
 {
-  // Debug console
-  digitalWrite(BT1, LOW);
-  digitalWrite(BT2, LOW);
-  digitalWrite(BT3, LOW);
- delay(100);
+  pinMode(BTN1,OUTPUT); 
+  pinMode(BTN2,OUTPUT); 
+  pinMode(BTN3,OUTPUT); 
+  digitalWrite(BTN1, LOW);
+  digitalWrite(BTN2, LOW);
+  digitalWrite(BTN3, LOW);
+  delay(100);
   Serial.begin(9600);
-   Blynk.begin(auth, ssid, pass);
-    lcd1.clear(); 
-    lcd1.print(3,0,"Smart Fan"); 
-    lcd1.print(5,1,"Controller"); 
-  pinMode(BT1,OUTPUT); 
-  pinMode(BT2,OUTPUT); 
-  pinMode(BT3,OUTPUT);  
+  //Initialize the Blynk library
+  Blynk.begin(auth, ssid, pass, "blynk.cloud", 8080);
+  LCD_BLYNK.clear(); 
+  LCD_BLYNK.print(4,0,"Babi");
+  LCD_BLYNK.print(8,1,"What's Up");
 }
 
 void loop()
 {
   Blynk.run();
 }
+
+//Function for Button No.1
 BLYNK_WRITE(V1){ 
   Serial.println(param.asInt()); 
     if (param.asInt()){ 
-        digitalWrite(BT1, HIGH);
-     lcd1.clear(); 
-     lcd1.print(4,0,"On Number"); 
-     lcd1.print(8,1,"1");  
-     BT1Blynk.on();
-     digitalWrite(BT2, LOW); 
-     BT2Blynk.off();
-     digitalWrite(BT3, LOW); 
-     BT3Blynk.off();
-     Blynk.virtualWrite(V2,0);
-     Blynk.virtualWrite(V3,0);
+     digitalWrite(BTN1, HIGH);
+     LCD_BLYNK.clear(); 
+     LCD_BLYNK.print(4,0,"On Number"); 
+     LCD_BLYNK.print(8,1,"1");  
+     LED1_BLYNK.on();
+     digitalWrite(BTN2, LOW); 
+     LED2_BLYNK.off();
+     digitalWrite(BTN3, LOW); 
+     LED3_BLYNK.off();
+     Blynk.virtualWrite(V2, LOW);
+     Blynk.virtualWrite(V3, LOW);
     } else {
-      digitalWrite(BT1, LOW); 
-      lcd1.clear();
-      lcd1.print(7,0,"Off");
-      BT1Blynk.off();
+      digitalWrite(BTN1, LOW); 
+      LCD_BLYNK.clear();
+      LCD_BLYNK.print(7,0,"Off");
+      LED1_BLYNK.off();
     }
 }
 BLYNK_WRITE(V2){ 
   Serial.println(param.asInt()); 
     if (param.asInt()){ 
-      digitalWrite(BT2, HIGH);
-     lcd1.clear(); 
-     lcd1.print(4,0,"On Number"); 
-     lcd1.print(8,1,"2");  
-     BT2Blynk.on();
-     BT1Blynk.on();
-     digitalWrite(BT1, LOW); 
-     BT1Blynk.off();
-     digitalWrite(BT3, LOW); 
-     BT3Blynk.off();
-     Blynk.virtualWrite(V1,0);
-     Blynk.virtualWrite(V3,0);
+     digitalWrite(BTN2, HIGH);
+     LCD_BLYNK.clear(); 
+     LCD_BLYNK.print(4,0,"On Number"); 
+     LCD_BLYNK.print(8,1,"2");  
+     LED2_BLYNK.on();
+     digitalWrite(BTN1, LOW); 
+     LED1_BLYNK.off();
+     digitalWrite(BTN3, LOW); 
+     LED3_BLYNK.off();
+     Blynk.virtualWrite(V1, LOW);
+     Blynk.virtualWrite(V3, LOW);
     } else {
-        digitalWrite(BT2, LOW); 
-        lcd1.clear();
-        lcd1.print(7,0,"Off");
-         BT2Blynk.off();
+        digitalWrite(BTN2, LOW); 
+        LCD_BLYNK.clear();
+        LCD_BLYNK.print(7,0,"Off");
+        LED2_BLYNK.off();
     }
 }
 BLYNK_WRITE(V3){ 
   Serial.println(param.asInt()); 
     if (param.asInt()){ 
-      digitalWrite(BT3, HIGH);
-     lcd1.clear(); 
-     lcd1.print(4,0,"On Number"); 
-     lcd1.print(8,1,"3");  
-      BT3Blynk.on();
-     digitalWrite(BT1, LOW); 
-     BT1Blynk.off();
-     digitalWrite(BT2, LOW); 
-     BT2Blynk.off();
-    Blynk.virtualWrite(V1,0);
-    Blynk.virtualWrite(V2,0);
+     digitalWrite(BTN3, HIGH);
+     LCD_BLYNK.clear(); 
+     LCD_BLYNK.print(4,0,"On Number"); 
+     LCD_BLYNK.print(8,1,"3");  
+     LED3_BLYNK.on();
+     digitalWrite(BTN1, LOW); 
+     LED1_BLYNK.off();
+     digitalWrite(BTN2, LOW); 
+     LED2_BLYNK.off();
+     Blynk.virtualWrite(V1, LOW);
+     Blynk.virtualWrite(V2, LOW);
     } else {
-        lcd1.clear();
-        lcd1.print(7,0,"Off");
-        digitalWrite(BT3, LOW); 
-         BT3Blynk.off();
+        LCD_BLYNK.clear();
+        LCD_BLYNK.print(7,0,"Off");
+        digitalWrite(BTN3, LOW); 
+        LED3_BLYNK.off();
     }
 }
-BLYNK_WRITE(V4){ 
-  Serial.println(param.asInt()); 
-
-    lcd1.clear();
-    lcd1.print(5,0,"Off All");
-    BT1Blynk.on();
-    digitalWrite(BT1, LOW); 
-    BT1Blynk.off();
-    digitalWrite(BT2, LOW); 
-    BT2Blynk.off();
-    digitalWrite(BT3, LOW); 
-    BT3Blynk.off();
-    Blynk.virtualWrite(V1,0);
-    Blynk.virtualWrite(V2,0);
-    Blynk.virtualWrite(V3,0);
-   }
